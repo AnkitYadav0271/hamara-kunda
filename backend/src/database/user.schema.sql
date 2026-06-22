@@ -23,3 +23,19 @@ CREATE TABLE users (
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+CREATE TABLE otp_verifications (
+    id SERIAL PRIMARY KEY,
+
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+
+    otp_code VARCHAR(10) NOT NULL,
+
+    purpose VARCHAR(20),
+
+    expires_at TIMESTAMP NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
