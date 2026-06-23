@@ -40,7 +40,7 @@ CREATE TABLE otp_verifications (
 
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
 
-    otp_code VARCHAR(10) NOT NULL,
+    otp_code_hash VARCHAR(255) NOT NULL,
 
     purpose VARCHAR(20),
 
