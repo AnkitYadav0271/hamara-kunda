@@ -17,7 +17,9 @@ CREATE TABLE users (
 
     profile_image VARCHAR(250),
 
-    bio VARCHAR(250),
+    bio TEXT,
+
+    is_verified DATE DEFAULT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
