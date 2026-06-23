@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
 
-    name VARCHAR(30),
+    full_name VARCHAR(30),
 
     user_name VARCHAR(100) UNIQUE NOT NULL,
 
@@ -19,11 +19,18 @@ CREATE TABLE users (
 
     bio TEXT,
 
-    is_verified DATE DEFAULT NULL,
+    email_verified_at DATE DEFAULT NULL,
+
+    phone_verified_at DATE DEFAULT NULL,
+
+    user_pref_language VARCHAR(10) DEFAULT 'hi'
+    CHECK(user_pref_language IN ('en','hi')),
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    
 );
 
 
@@ -33,7 +40,7 @@ CREATE TABLE otp_verifications (
 
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
 
-    otp_code VARCHAR(10) NOT NULL,
+    otp_code_hash VARCHAR(255) NOT NULL,
 
     purpose VARCHAR(20),
 
