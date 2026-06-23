@@ -15,12 +15,15 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.22.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.6",
+    "@types/express-validator": "^2.20.33",
     "@types/jsonwebtoken": "^9.0.10",
     "typescript": "^6.0.3"
   }
