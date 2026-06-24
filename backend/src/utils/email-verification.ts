@@ -1,5 +1,5 @@
 
 
-export function emailVerification(email:string){
+export function emailVerification(email:string,otp:string){
     
 }

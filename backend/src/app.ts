@@ -1,14 +1,18 @@
 import dotenv from "dotenv";
 dotenv.config();
-
+import cookieParser from "cookie-parser";
 import express from "express";
-import { pool } from "./config/db.ts";
+import UserRouter from "./modules/users/users.route.ts";
 
+const PORT = process.env.PORT || 6969;
 const app = express();
 
-async function test() {
-  const result = await pool.query(`SELECT NOW()`);
-  console.log(result.rows);
-}
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
-test();
+app.use("/users", UserRouter);
+
+app.listen(PORT, () => {
+  console.log("app is running on port:6969");
+});
