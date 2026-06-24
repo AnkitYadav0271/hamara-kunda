@@ -45,3 +45,8 @@ export interface User {
 
   updated_at: Date;
 }
+
+export interface loginData {
+  email:string;
+  password:string
+}

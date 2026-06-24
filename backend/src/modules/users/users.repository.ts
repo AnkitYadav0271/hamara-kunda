@@ -1,5 +1,5 @@
 import { pool } from "../../config/db.ts";
-import {  CreateUserDataRepo, User } from "../../utils/users.types.ts";
+import { CreateUserDataRepo, User } from "../../utils/users.types.ts";
 
 //*______________________________________________________//
 //* ______________CREATE USER REPO FUNCTION______________//
@@ -17,18 +17,37 @@ export async function createUser(data: CreateUserDataRepo) {
   return result.rows[0];
 }
 
-
 //*______________________________________________________//
 //* ___________GET USER BY EMAIL REPO FUNCTION___________//
 //*______________________________________________________//
 
-export async function findUserByEmail(email:string): Promise< User | undefined>{
-    const query = `SELECT * FROM USERS 
+export async function findUserByEmail(
+  email: string,
+): Promise<User | undefined> {
+  const query = `SELECT * FROM USERS 
                    WHERE email = $1`;
-    const values = [email];
-    
-    const result = await pool.query(query,values);
+  const values = [email];
 
-    return result.rows[0];
+  const result = await pool.query(query, values);
+
+  return result.rows[0];
 }
 
+//*______________________________________________________//
+//* ___________GET USER BY ID FUNCTION___________//
+//*______________________________________________________//
+
+export async function findUserById(id: number) {
+  try {
+    const query = `SELECT * FROM users WHERE id = $1`;
+    const values = [id];
+
+    const result = await pool.query(query, values);
+
+    console.log("Query result for findUserById")
+
+    return result.rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
