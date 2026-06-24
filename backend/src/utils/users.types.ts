@@ -2,7 +2,15 @@
 //*Interface CreateUserData
 
 export interface CreateUserData {
-  name: string;
+  fullName: string;
+  userName: string;
+  email: string;
+  mobileNo?: string;
+  password: string;
+}
+
+export interface CreateUserDataRepo {
+  fullName: string;
   userName: string;
   email: string;
   mobileNo?: string;

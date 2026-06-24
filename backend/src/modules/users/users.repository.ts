@@ -1,20 +1,20 @@
 import { pool } from "../../config/db.ts";
-import { CreateUserData, User } from "../../utils/users.types.ts";
+import {  CreateUserDataRepo, User } from "../../utils/users.types.ts";
 
 //*______________________________________________________//
 //* ______________CREATE USER REPO FUNCTION______________//
 //*______________________________________________________//
 
-export async function createUser(data: CreateUserData) {
+export async function createUser(data: CreateUserDataRepo) {
   const query = `INSERT INTO users(full_name,user_name,email,password_hash)
    VALUES($1,$2,$3,$4)
-    RETURNING *`;
+    RETURNING id, email,full_name,user_name,created_at`;
 
-  const values = [data.name, data.userName, data.email, data.passwordHash];
+  const values = [data.fullName, data.userName, data.email, data.passwordHash];
 
   const result = await pool.query(query, values);
 
-  return result;
+  return result.rows[0];
 }
 
 
