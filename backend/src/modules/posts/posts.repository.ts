@@ -42,3 +42,77 @@ export async function createPost(data: PostDataRepo) {
     await client.release();
   }
 }
+
+export async function getFeedRepo(cursor?: number, limit: number = 20) {
+  let query: string;
+  let values: any[];
+
+  try {
+
+    console.log("Starting the query ::");
+    if (!cursor) {
+      query = `
+      SELECT
+        p.id,
+        p.post_title,
+        p.post_description,
+        p.post_type,
+        p.created_at,
+
+        u.id as user_id,
+        u.full_name as full_name,
+        u.user_name,
+        u.profile_image
+
+      FROM posts p
+      JOIN users u
+      ON p.user_id = u.id
+
+      WHERE p.post_status = 'active'
+
+      ORDER BY p.id DESC
+
+      LIMIT $1
+    `;
+
+      values = [limit];
+    } else {
+      query = `
+      SELECT
+        p.id,
+        p.post_title,
+        p.post_description,
+        p.post_type,
+        p.created_at,
+
+        u.id as user_id,
+        u.name as full_name,
+        u.user_name,
+        u.profile_image
+
+      FROM posts p
+      JOIN users u
+      ON p.user_id = u.id
+
+      WHERE
+        p.post_status = 'active'
+        AND p.id < $1
+
+      ORDER BY p.id DESC
+
+      LIMIT $2
+    `;
+
+      values = [cursor, limit];
+    }
+
+
+    const result = await pool.query(query, values);
+
+    console.log("this is the result!!", result);
+
+    return result.rows;
+  } catch (err) {
+    throw err;
+  }
+}
