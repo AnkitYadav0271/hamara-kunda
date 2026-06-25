@@ -1,7 +1,11 @@
+CREATE TABLE business_categories (
+    id SERIAL PRIMARY KEY,
 
+    category_name VARCHAR(100) UNIQUE NOT NULL
+);
 
 CREATE TABLE businesses (
-    id INT SERIAL PRIMARY KEY,
+    id  SERIAL PRIMARY KEY,
 
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
 
@@ -43,7 +47,7 @@ CREATE TABLE business_likes (
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    UNIQUE(business_id,user_id),
+    UNIQUE(business_id,user_id)
 );
 
 
@@ -65,11 +69,7 @@ CREATE TABLE business_ratings (
 
 
 
-CREATE TABLE business_categories (
-    id SERIAL PRIMARY KEY,
 
-    category_name VARCHAR(100) UNIQUE NOT NULL
-);
 
 CREATE TABLE business_media(
     id SERIAL PRIMARY KEY,
