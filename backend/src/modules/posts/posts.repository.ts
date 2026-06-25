@@ -48,7 +48,6 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
   let values: any[];
 
   try {
-
     console.log("Starting the query ::");
     if (!cursor) {
       query = `
@@ -106,12 +105,98 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
       values = [cursor, limit];
     }
 
-
     const result = await pool.query(query, values);
 
     console.log("this is the result!!", result);
 
     return result.rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
+//* Find postDetails by Id;
+
+export async function getPostDetails(id: number) {
+  try {
+    const query = `
+SELECT
+    p.id,
+    p.post_title,
+    p.post_description,
+    p.post_type,
+    p.created_at,
+
+    u.id AS user_id,
+    u.full_name,
+    u.user_name,
+    u.profile_image,
+
+    pm.id AS media_id,
+    pm.media_url,
+    pm.media_type
+
+FROM posts p
+
+JOIN users u
+ON u.id = p.user_id
+
+LEFT JOIN post_media pm
+ON pm.post_id = p.id
+
+WHERE
+    p.id = $1
+    AND p.post_status = 'active'
+`;
+    const values = [id];
+    return (await pool.query(query, values)).rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
+//* getPostById
+
+export async function findPostById(id: number) {
+  try {
+    const query = `SELECT * FROM posts WHERE id = $1`;
+    const values = [id];
+
+    const post = await pool.query(query, values);
+    return post.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
+//* updatePost
+
+export async function updatePost(
+  id: number,
+  title: string,
+  description: string,
+) {
+  try {
+    const query = `UPDATE posts SET
+                post_title = $1 , post_description = $2 ,updated_at = CURRENT_TIMESTAMP
+                WHERE id = $3 RETURNING *`;
+
+    const values = [title, description, id];
+
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//* Delete Post
+
+export async function deletePost(id: number) {
+  try {
+    const query = `UPDATE posts SET post_status = $2 WHERE id = $1 RETURNING *`;
+    const value = [id, "deleted"];
+
+    return (await pool.query(query, value)).rows[0];
   } catch (err) {
     throw err;
   }
