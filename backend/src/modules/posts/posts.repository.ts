@@ -48,7 +48,6 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
   let values: any[];
 
   try {
-
     console.log("Starting the query ::");
     if (!cursor) {
       query = `
@@ -106,12 +105,51 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
       values = [cursor, limit];
     }
 
-
     const result = await pool.query(query, values);
 
     console.log("this is the result!!", result);
 
     return result.rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
+//* Find post by Id;
+
+export async function findPostById(id: number) {
+  try {
+    const query = `
+SELECT
+    p.id,
+    p.post_title,
+    p.post_description,
+    p.post_type,
+    p.created_at,
+
+    u.id AS user_id,
+    u.full_name,
+    u.user_name,
+    u.profile_image,
+
+    pm.id AS media_id,
+    pm.media_url,
+    pm.media_type
+
+FROM posts p
+
+JOIN users u
+ON u.id = p.user_id
+
+LEFT JOIN post_media pm
+ON pm.post_id = p.id
+
+WHERE
+    p.id = $1
+    AND p.post_status = 'active'
+`;
+    const values = [id];
+    return (await pool.query(query, values)).rows;
   } catch (err) {
     throw err;
   }

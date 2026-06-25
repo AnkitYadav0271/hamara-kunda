@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "../../errors/bad-request-error";
-import { getFeedService, postService } from "./posts.services";
+import { getFeedService, getPostService, postService } from "./posts.services";
 import { getFeedRepo } from "./posts.repository";
+import { error } from "node:console";
 
 export const postController = async (
   req: Request,
@@ -49,6 +50,38 @@ export const getFeedController = async (
     return res
       .status(200)
       .json({ success: true, message: "got the feed", posts });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//*Edit post controller
+
+export const getPostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const postId = req.params.postId ? Number(req.params.postId) : null;
+    if (!postId) {
+      throw new BadRequestError("PostId is required");
+    }
+
+    const post = await getPostService(postId);
+
+    if (!post) {
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message: "post is not available or not active",
+        });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "got the requested post", post });
   } catch (err) {
     next(err);
   }
