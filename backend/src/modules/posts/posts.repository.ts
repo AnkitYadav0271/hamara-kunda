@@ -115,9 +115,9 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
   }
 }
 
-//* Find post by Id;
+//* Find postDetails by Id;
 
-export async function findPostById(id: number) {
+export async function getPostDetails(id: number) {
   try {
     const query = `
 SELECT
@@ -150,6 +150,53 @@ WHERE
 `;
     const values = [id];
     return (await pool.query(query, values)).rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
+//* getPostById
+
+export async function findPostById(id: number) {
+  try {
+    const query = `SELECT * FROM posts WHERE id = $1`;
+    const values = [id];
+
+    const post = await pool.query(query, values);
+    return post.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
+//* updatePost
+
+export async function updatePost(
+  id: number,
+  title: string,
+  description: string,
+) {
+  try {
+    const query = `UPDATE posts SET
+                post_title = $1 , post_description = $2 ,updated_at = CURRENT_TIMESTAMP
+                WHERE id = $3 RETURNING *`;
+
+    const values = [title, description, id];
+
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//* Delete Post
+
+export async function deletePost(id: number) {
+  try {
+    const query = `UPDATE posts SET post_status = $2 WHERE id = $1 RETURNING *`;
+    const value = [id, "deleted"];
+
+    return (await pool.query(query, value)).rows[0];
   } catch (err) {
     throw err;
   }

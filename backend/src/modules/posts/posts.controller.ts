@@ -1,8 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "../../errors/bad-request-error";
-import { getFeedService, getPostService, postService } from "./posts.services";
+import {
+  deletePostService,
+  getFeedService,
+  getPostDetailsService,
+  postService,
+  updatePostDetailsService,
+} from "./posts.services";
 import { getFeedRepo } from "./posts.repository";
 import { error } from "node:console";
+import { NotAuthorizedError } from "../../errors/not-authorised-error";
 
 export const postController = async (
   req: Request,
@@ -55,9 +62,9 @@ export const getFeedController = async (
   }
 };
 
-//*Edit post controller
+//*getPOstDetails
 
-export const getPostController = async (
+export const getPostDetailsController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -68,20 +75,87 @@ export const getPostController = async (
       throw new BadRequestError("PostId is required");
     }
 
-    const post = await getPostService(postId);
+    const post = await getPostDetailsService(postId);
 
     if (!post) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "post is not available or not active",
-        });
+      return res.status(404).json({
+        success: false,
+        message: "post is not available or not active",
+      });
     }
 
     return res
       .status(200)
       .json({ success: true, message: "got the requested post", post });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//*updatePostDetails
+
+export const updatePostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const postId = req.params.postId ? Number(req.params.postId) : null;
+    if (!postId) {
+      throw new BadRequestError("missing postId");
+    }
+
+    const { title, description } = req.body;
+
+    if (!title.trim()) {
+      return new BadRequestError("title is Required");
+    }
+
+    const userId = req.userId ? Number(req.userId) : null;
+
+    if (!userId) {
+      throw new NotAuthorizedError();
+    }
+
+    const post = await updatePostDetailsService(
+      postId,
+      userId,
+      title,
+      description,
+    );
+
+    return res
+      .status(200)
+      .json({ success: true, message: "updated post", post });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//*DeletePostController
+
+export const deletePostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const postId = req.params.postId ? Number(req.params.postId) : null;
+  const userId = req.userId;
+
+  if (!postId) {
+    throw new BadRequestError("postId is missing");
+  }
+
+  if (!userId) {
+    throw new NotAuthorizedError();
+  }
+
+  try {
+    const post = await deletePostService(postId, userId);
+
+    return res
+      .status(200)
+      .json({ success: true, message: "post deleted successfully", post });
   } catch (err) {
     next(err);
   }
