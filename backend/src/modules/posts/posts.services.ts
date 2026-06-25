@@ -1,7 +1,7 @@
 import { BadRequestError } from "../../errors/bad-request-error.ts";
 import { cloudinaryUploader } from "../../utils/cloudinary-uploader.ts";
 import { PostDataService } from "./post.types.ts";
-import { createPost } from "./posts.repository.ts";
+import { createPost, getFeedRepo } from "./posts.repository.ts";
 
 export async function postService(data: PostDataService) {
   try {
@@ -25,16 +25,19 @@ export async function postService(data: PostDataService) {
         },
       });
     } else {
-
-      console.log("got the else part!");
       post = await createPost({ ...data, mediaDetails: null });
-
-      console.log("after the else part");
     }
 
-    console.log("logging created post :", post);
-
     return post;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getFeedService(cursor?: number, limit: number = 20) {
+  try {
+    const posts = await getFeedRepo(cursor, limit);
+    return posts;
   } catch (err) {
     throw err;
   }
