@@ -18,3 +18,14 @@ export interface PostDataService {
   postType: "user" | "alert" | "business" | "news" | "sponsored";
   media?: Buffer; //buffer ke jagah multer karenge aur dekhenge kya kar sakete hai
 }
+
+export interface Post {
+  id: number;
+  user_id: number;
+  business_id: number | null;
+  post_title: string;
+  post_description: string | null;
+  created_at: Date;
+  post_status: "active" | "hidden" | "deleted";
+  post_type: "user" | "business" | "alert" | "news" | "sponsored";
+}

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import UserRouter from "./modules/users/users.route.ts";
 import PostRouter from "./modules/posts/posts.route.ts";
+import LikePostRouter from "./modules/postLikes/postLike.route.ts";
 import { errorHandler } from "./errors/error-handler.ts";
 
 const PORT = process.env.PORT || 6969;
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", UserRouter);
 app.use("/api/posts", PostRouter);
+app.use("/api/posts", LikePostRouter);
 
 app.use(errorHandler);
 
