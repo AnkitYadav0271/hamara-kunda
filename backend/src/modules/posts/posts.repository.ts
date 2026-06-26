@@ -1,7 +1,9 @@
-import { PostDataRepo } from "./post.types";
+import { Post, PostDataRepo } from "./post.types.ts";
 import { pool } from "../../config/db.ts";
 
-export async function createPost(data: PostDataRepo) {
+export async function createPost(
+  data: PostDataRepo,
+): Promise<Post | undefined> {
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
@@ -157,7 +159,7 @@ WHERE
 
 //* getPostById
 
-export async function findPostById(id: number) {
+export async function findPostById(id: number): Promise<Post | undefined> {
   try {
     const query = `SELECT * FROM posts WHERE id = $1`;
     const values = [id];
@@ -175,7 +177,7 @@ export async function updatePost(
   id: number,
   title: string,
   description: string,
-) {
+): Promise<Post | undefined> {
   try {
     const query = `UPDATE posts SET
                 post_title = $1 , post_description = $2 ,updated_at = CURRENT_TIMESTAMP
@@ -191,12 +193,28 @@ export async function updatePost(
 
 //* Delete Post
 
-export async function deletePost(id: number) {
+export async function deletePost(id: number): Promise<Post | undefined> {
   try {
     const query = `UPDATE posts SET post_status = $2 WHERE id = $1 RETURNING *`;
     const value = [id, "deleted"];
 
     return (await pool.query(query, value)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//*FindPostById
+//!this repo is not tested yet
+
+export async function findPostByUserId(
+  userId: number,
+): Promise<Post | undefined> {
+  const query = `SELECT * FROM posts WHERE user_id = $1`;
+  const values = [userId];
+
+  try {
+    return (await pool.query(query, values)).rows[0];
   } catch (err) {
     throw err;
   }
