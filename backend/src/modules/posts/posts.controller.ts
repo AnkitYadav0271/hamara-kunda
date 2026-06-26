@@ -22,7 +22,7 @@ export const postController = async (
   const userId = req.userId;
 
   try {
-    if (!title.trim()) {
+    if (!title?.trim()) {
       throw new BadRequestError("title is Required");
     }
 
@@ -107,7 +107,7 @@ export const updatePostController = async (
 
     const { title, description } = req.body;
 
-    if (!title.trim()) {
+    if (!title?.trim()) {
       return new BadRequestError("title is Required");
     }
 
