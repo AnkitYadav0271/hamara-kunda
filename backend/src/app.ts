@@ -6,6 +6,7 @@ import UserRouter from "./modules/users/users.route.ts";
 import PostRouter from "./modules/posts/posts.route.ts";
 import PostCommentRouter from "./modules/postComments/postComments.route.ts";
 import LikePostRouter from "./modules/postLikes/postLike.route.ts";
+import BusinessRouter from "./modules/businesses/business.route.ts";
 import { errorHandler } from "./errors/error-handler.ts";
 
 const PORT = process.env.PORT || 6969;
@@ -19,6 +20,7 @@ app.use("/users", UserRouter);
 app.use("/api/posts", PostRouter);
 app.use("/api/posts", LikePostRouter);
 app.use("/api/posts", PostCommentRouter);
+app.use("/api/business", BusinessRouter);
 
 app.use(errorHandler);
 
