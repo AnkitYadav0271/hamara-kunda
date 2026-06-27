@@ -1,11 +1,11 @@
 import cloudinary from "../config/cloudinary.config.ts";
 import streamifier from "streamifier";
 
-export const cloudinaryUploader = async (file: Buffer) => {
+export const cloudinaryUploader = async (file: Buffer,path:string) => {
     try{
   const uploadResult = await new Promise<any>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      { folder: "dravidian-campus/gallery" },
+      { folder: `${path}` },
       (error, result) => {
         if (error) {
           console.log("Logging the error", error);

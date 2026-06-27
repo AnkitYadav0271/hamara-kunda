@@ -19,6 +19,10 @@ CREATE TABLE businesses (
 
     website VARCHAR(255),
 
+    business_profile_image_url VARCHAR(255),
+
+    business_profile_image_public_id VARCHAR(255),
+
     contact_number VARCHAR(40),
 
     email VARCHAR(100)
