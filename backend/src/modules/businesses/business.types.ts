@@ -37,6 +37,9 @@ export interface Business {
   website?: string;
   contact_number: string;
   email?: string;
+  status: "deleted" | "active" | "hidden";
+  verified_at: Date | null;
+  sponsored_until: Date | null;
 }
 
 export type Category =
@@ -60,3 +63,27 @@ export type Category =
   | "Fuel Station"
   | "Furniture"
   | "Others";
+
+export interface UpdateBusinessData {
+  userId: number;
+  id: number;
+  businessName: string;
+  businessAddress: string;
+  businessDescription?: string;
+  contactNumber: string;
+  categoryName: Category;
+  email?: string;
+  website?: string;
+}
+
+export interface UpdateBusinessDataRepo {
+  userId: number;
+  id: number;
+  businessName: string;
+  businessAddress: string;
+  businessDescription?: string;
+  contactNumber: string;
+  categoryId: number;
+  email?: string;
+  website?: string;
+}

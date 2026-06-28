@@ -50,7 +50,6 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
   let values: any[];
 
   try {
-    console.log("Starting the query ::");
     if (!cursor) {
       query = `
       SELECT
@@ -109,7 +108,7 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
 
     const result = await pool.query(query, values);
 
-    console.log("this is the result!!", result);
+
 
     return result.rows;
   } catch (err) {

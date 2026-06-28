@@ -7,8 +7,6 @@ import {
   postService,
   updatePostDetailsService,
 } from "./posts.services";
-import { getFeedRepo } from "./posts.repository";
-import { error } from "node:console";
 import { NotAuthorizedError } from "../../errors/not-authorised-error";
 
 export const postController = async (
@@ -51,9 +49,7 @@ export const getFeedController = async (
   try {
     const cursor = req.query.cursor ? Number(req.query.cursor) : undefined;
     const limit = req.query.limit ? Math.min(Number(req.query.limit), 40) : 20;
-    console.log("got the request!! and controller");
     const posts = await getFeedService(cursor, limit);
-    console.log("posts at controller ::", posts);
     return res
       .status(200)
       .json({ success: true, message: "got the feed", posts });
