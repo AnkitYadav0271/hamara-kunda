@@ -1,4 +1,4 @@
-import { pool } from "../../config/db.ts";
+import { pool } from "../../../config/db.ts";
 
 export async function doLikePost(postId: number, userId: number) {
   const query = `INSERT INTO post_likes(post_id,user_id) VALUES($1,$2) RETURNING *`;

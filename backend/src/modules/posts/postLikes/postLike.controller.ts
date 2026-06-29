@@ -4,8 +4,8 @@ import {
   getPostLikesService,
   undoLikeService,
 } from "./postLike.services.ts";
-import { BadRequestError } from "../../errors/bad-request-error";
-import { NotAuthorizedError } from "../../errors/not-authorised-error";
+import { BadRequestError } from "../../../errors/bad-request-error";
+import { NotAuthorizedError } from "../../../errors/not-authorised-error";
 
 //*do like controller
 export const doLikePostController = async (

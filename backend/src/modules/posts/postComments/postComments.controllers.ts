@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { BadRequestError } from "../../errors/bad-request-error";
-import { NotAuthorizedError } from "../../errors/not-authorised-error";
+import { BadRequestError } from "../../../errors/bad-request-error";
+import { NotAuthorizedError } from "../../../errors/not-authorised-error";
 import {
   createPostCommentService,
   deletePostCommentService,

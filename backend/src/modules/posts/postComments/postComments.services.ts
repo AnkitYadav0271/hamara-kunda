@@ -1,8 +1,8 @@
-import { ForbiddenError } from "../../errors/forbidden-error.ts";
-import { NotAuthorizedError } from "../../errors/not-authorised-error.ts";
-import { NotFoundError } from "../../errors/not-found-error.ts";
-import { findPostById } from "../posts/posts.repository.ts";
-import { findUserById } from "../users/users.repository.ts";
+import { ForbiddenError } from "../../../errors/forbidden-error.ts";
+import { NotAuthorizedError } from "../../../errors/not-authorised-error.ts";
+import { NotFoundError } from "../../../errors/not-found-error.ts";
+import { findPostById } from "../../posts/posts.repository.ts";
+import { findUserById } from "../../users/users.repository.ts";
 import {
   createPostComment,
   deletePostComment,
