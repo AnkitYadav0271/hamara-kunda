@@ -1,4 +1,4 @@
-import { pool } from "../../config/db.ts";
+import { pool } from "../../../config/db.ts";
 import { Comment } from "./postComments.types.ts";
 
 //*Create post comments

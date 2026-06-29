@@ -1,8 +1,8 @@
-import { BadRequestError } from "../../errors/bad-request-error.ts";
-import { NotAuthorizedError } from "../../errors/not-authorised-error.ts";
-import { NotFoundError } from "../../errors/not-found-error.ts";
-import { findPostById } from "../posts/posts.repository.ts";
-import { findUserById } from "../users/users.repository.ts";
+import { BadRequestError } from "../../../errors/bad-request-error.ts";
+import { NotAuthorizedError } from "../../../errors/not-authorised-error.ts";
+import { NotFoundError } from "../../../errors/not-found-error.ts";
+import { findPostById } from "../posts.repository.ts";
+import { findUserById } from "../../users/users.repository.ts";
 import {
   doLikePost,
   findLikesByPost,

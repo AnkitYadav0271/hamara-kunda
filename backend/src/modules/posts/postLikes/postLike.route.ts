@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authMiddleware } from "../../middleware/auth.middleware.ts";
+import { authMiddleware } from "../../../middleware/auth.middleware.ts";
 import {
   doLikePostController,
   getPostLikesController,

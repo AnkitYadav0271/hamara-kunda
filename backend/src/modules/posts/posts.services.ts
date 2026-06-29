@@ -20,7 +20,7 @@ export async function postService(data: PostDataService) {
 
     let cloudinaryUploadResult;
     if (data.media) {
-      cloudinaryUploadResult = await cloudinaryUploader(data.media);
+      cloudinaryUploadResult = await cloudinaryUploader(data.media,"/hamara-kunda/posts");
     }
 
     let post;
