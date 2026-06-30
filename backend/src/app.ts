@@ -9,6 +9,7 @@ import LikePostRouter from "./modules/posts/postLikes/postLike.route.ts";
 import BusinessRouter from "./modules/businesses/business.route.ts";
 import BusinessFollowRouter from "./modules/businesses/businessFollowers/businessFollowers.route.ts";
 import BusinessRatingRouter from "./modules/businesses/businessRatings/businessRatings.route.ts";
+import EventRouter from "./modules/events/events.route.ts";
 import { errorHandler } from "./errors/error-handler.ts";
 
 const PORT = process.env.PORT || 6969;
@@ -25,6 +26,7 @@ app.use("/api/posts", PostCommentRouter);
 app.use("/api/business", BusinessRouter);
 app.use("/api/business", BusinessFollowRouter);
 app.use("/api/business", BusinessRatingRouter);
+app.use("/api/events", EventRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {

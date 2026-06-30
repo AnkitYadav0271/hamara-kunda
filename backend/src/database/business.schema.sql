@@ -84,6 +84,8 @@ CREATE TABLE business_media(
 
     media_type VARCHAR(50),
 
+    cloud_id:VARCHAR(255),
+
     business_media_status VARCHAR(50) DEFAULT 'active',
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
