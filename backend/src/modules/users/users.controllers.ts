@@ -42,7 +42,6 @@ export const currentUserController = async (req: Request, res: Response) => {
 
   userId = Number(userId);
 
-  console.log("logging userId:",userId);
 
   const user = await currentUserService(userId);
 

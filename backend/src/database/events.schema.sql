@@ -4,6 +4,8 @@ CREATE TABLE events (
 
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
 
+    business_id INT REFERENCES businesses(id) ON DELETE CASCADE NULL,
+
     event_title TEXT NOT NULL,
 
     event_description TEXT,
@@ -18,9 +20,9 @@ CREATE TABLE events (
 
     ticket_price INT,
 
-    start_at TIMESTAMP,
+    start_at VARCHAR(200),
 
-    end_at TIMESTAMP,
+    end_at VARCHAR(200),
 
     event_status VARCHAR(20) DEFAULT 'active',
 
@@ -32,6 +34,7 @@ CREATE TABLE events (
         event_status IN (
             'draft',
             'active',
+            'hidden',
             'cancelled',
             'completed'
         )
@@ -56,6 +59,8 @@ CREATE TABLE event_media (
 
     media_type VARCHAR(20),
 
+    cloud_id  VARCHAR(255),
+
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     media_status VARCHAR(20) DEFAULT 'active',
@@ -71,5 +76,5 @@ CREATE TABLE event_media (
 
 CREATE TABLE event_types (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL
+    category_name VARCHAR(100) UNIQUE NOT NULL
 );

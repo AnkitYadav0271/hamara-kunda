@@ -30,7 +30,10 @@ CREATE TABLE post_media (
 
     cloud_id TEXT,
 
-    media_type VARCHAR(20)
+    media_type VARCHAR(20),
+
+    media_status VARCHAR(40),
+    CHECK (media_status IN ('active','hidden','deleted'))
 );
 
 CREATE TABLE post_likes (
