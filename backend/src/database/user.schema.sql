@@ -59,3 +59,20 @@ CREATE TABLE refresh_tokens (
 
     expires_at TIMESTAMP NOT NULL
 );
+
+
+CREATE TABLE user_followers(
+    id SERIAL PRIMARY KEY,
+
+    follower_id INT REFERENCES users(id) ON DELETE CASCADE,
+
+    following_id INT REFERENCES users(id) ON DELETE CASCADE,
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CHECK (follower_id <> following_id),
+    
+    UNIQUE(follower_id,following_id)
+
+
+)

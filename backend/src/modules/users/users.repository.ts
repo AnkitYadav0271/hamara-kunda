@@ -44,10 +44,119 @@ export async function findUserById(id: number) {
 
     const result = await pool.query(query, values);
 
-    console.log("Query result for findUserById")
+    console.log("Query result for findUserById");
 
     return result.rows[0];
   } catch (err) {
     throw err;
   }
+}
+
+//*______________________________________________________//
+//* ___________ADD  USER FOLLOWER REPO___________//
+//*______________________________________________________//
+
+export async function followUser(data: {
+  followingId: number;
+  followerId: number;
+}) {
+  const query =
+    "INSERT INTO user_followers(following_id,follower_id) VALUES($1,$2) RETURNING *";
+  const values = [data.followerId, data.followerId];
+
+  try {
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//*______________________________________________________//
+//* ___________UNFOLLOW USER FUNCTION___________//
+//*______________________________________________________//
+
+export async function unfollowUser(data: {
+  followingId: number;
+  followerId: number;
+}) {
+  const query = `DELETE FROM user_followers WHERE following_id = $1 AND follower_id = $2 RETURNING *`;
+  const values = [data.followingId, data.followerId];
+  try {
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//*______________________________________________________//
+//* ___________CHECK IF USER FOLLOWS OR NOT FUNCTION_____//
+//*______________________________________________________//
+
+export async function isUserFollowing(data: {
+  followingId: number;
+  followerId: number;
+}) {
+  try {
+    const query = `SELECT * FROM user_followers WHERE following_id = $1 AND follower_id = $2`;
+    const values = [data.followingId, data.followerId];
+
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//*______________________________________________________//
+//* ___________GET FOLLOWING COUNT_____//
+//*______________________________________________________//
+
+export async function countFollowers(userId: number) {
+  const query = `SELECT COUNT(*) as follower_count FROM user_followers WHERE following_id = $1`;
+  const values = [userId];
+
+  try {
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//*______________________________________________________//
+//* ___________CHECK IF USER FOLLOWS OR NOT FUNCTION_____//
+//*______________________________________________________//
+
+export async function countFollowing(userId: number) {
+  const query = `SELECT COUNT(*) as follower_count FROM user_followers WHERE follower_id = $1`;
+  const values = [userId];
+
+  try {
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//*______________________________________________________//
+//* ___________GET OTP by Id FUNCTION_____//
+//*______________________________________________________//
+
+export async function getOptByUserId(userId: number) {
+  const query = `SELECT * FROM email_verifications where user_id = $1`;
+  const values = [userId];
+
+  try {
+    return (await pool.query(query, values)).rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+//*______________________________________________________//
+//* ___________Verify user email_________________________//
+//*______________________________________________________//
+
+export async function verifyUserEmail(userId: number) {
+  const query = `UPDATE users SET email_verified_at = CURRENT_TIMESTAMP WHERE id = $1`;
+  const values = [userId];
+  return pool.query(query, values);
 }
