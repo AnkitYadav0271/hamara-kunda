@@ -1,0 +1,2 @@
+//agle din post ke liye controller aur route set karna hai
+//abhi bhi send email otp aur logout implement karna par ise post ke badd karenge
