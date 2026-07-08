@@ -11,6 +11,7 @@ import BusinessFollowRouter from "./modules/businesses/businessFollowers/busines
 import BusinessRatingRouter from "./modules/businesses/businessRatings/businessRatings.route.ts";
 import EventRouter from "./modules/events/events.route.ts";
 import { errorHandler } from "./errors/error-handler.ts";
+import { hostname } from "node:os";
 
 const PORT = process.env.PORT || 6969;
 const app = express();
@@ -29,6 +30,6 @@ app.use("/api/business", BusinessRatingRouter);
 app.use("/api/events", EventRouter);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT,"0.0.0.0", () => {
   console.log("app is running on port:6969");
 });
