@@ -1,7 +1,11 @@
+CREATE TABLE business_categories (
+    id SERIAL PRIMARY KEY,
 
+    category_name VARCHAR(100) UNIQUE NOT NULL
+);
 
 CREATE TABLE businesses (
-    id INT SERIAL PRIMARY KEY,
+    id  SERIAL PRIMARY KEY,
 
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
 
@@ -14,6 +18,10 @@ CREATE TABLE businesses (
     business_address TEXT,
 
     website VARCHAR(255),
+
+    business_profile_image_url VARCHAR(255),
+
+    business_profile_image_public_id VARCHAR(255),
 
     contact_number VARCHAR(40),
 
@@ -43,7 +51,7 @@ CREATE TABLE business_likes (
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    UNIQUE(business_id,user_id),
+    UNIQUE(business_id,user_id)
 );
 
 
@@ -65,11 +73,7 @@ CREATE TABLE business_ratings (
 
 
 
-CREATE TABLE business_categories (
-    id SERIAL PRIMARY KEY,
 
-    category_name VARCHAR(100) UNIQUE NOT NULL
-);
 
 CREATE TABLE business_media(
     id SERIAL PRIMARY KEY,
@@ -79,6 +83,8 @@ CREATE TABLE business_media(
     media_url TEXT NOT NULL,
 
     media_type VARCHAR(50),
+
+    cloud_id:VARCHAR(255),
 
     business_media_status VARCHAR(50) DEFAULT 'active',
 

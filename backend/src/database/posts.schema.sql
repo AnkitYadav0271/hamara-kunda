@@ -3,6 +3,10 @@ CREATE TABLE posts (
 
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
 
+    business_id INT REFERENCES businesses(id) ON DELETE CASCADE,
+
+    post_title VARCHAR(255),
+
     post_description TEXT,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -10,7 +14,10 @@ CREATE TABLE posts (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     post_status VARCHAR(20) DEFAULT 'active'
-    CHECK(post_status IN ('active','hidden','deleted'))
+    CHECK(post_status IN ('active','hidden','deleted')),
+
+    post_type VARCHAR(20) DEFAULT 'user'
+    CHECK(post_type IN ('user','business','alert','news','sponsored'))
 );
 
 
@@ -21,7 +28,12 @@ CREATE TABLE post_media (
 
     media_url TEXT,
 
-    media_type VARCHAR(20)
+    cloud_id TEXT,
+
+    media_type VARCHAR(20),
+
+    media_status VARCHAR(40),
+    CHECK (media_status IN ('active','hidden','deleted'))
 );
 
 CREATE TABLE post_likes (
