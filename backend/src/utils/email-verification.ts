@@ -1,13 +1,11 @@
-
-
-import {transporter} from "../config/mailer.ts";
+import { transporter } from "../config/mailer.ts";
 
 export async function sendEmailVerification(
   email: string,
   otp: string,
 ): Promise<void> {
   try {
-    await transporter.sendMail({
+    const res = await transporter.sendMail({
       from: `"Hamara Kunda" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Verify your email - Hamara Kunda",

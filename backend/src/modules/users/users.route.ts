@@ -25,7 +25,7 @@ router.post(
   loginUserController,
 );
 
-router.post("/currentUser", authMiddleware, currentUserController);
+router.get("/currentUser", authMiddleware, currentUserController);
 
 router.post("/:followingId/follow", authMiddleware, followUserController);
 router.delete("/:followingId", authMiddleware, unfollowUserController);
