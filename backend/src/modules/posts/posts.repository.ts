@@ -53,50 +53,66 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
     if (!cursor) {
       query = `
       SELECT
-        p.id,
-        p.post_title,
-        p.post_description,
-        p.post_type,
-        p.created_at,
+    p.id as id,
+    p.post_title as postTitle,
+    p.post_description as postDescription,
+    p.post_type as postType,
+    p.created_at as createdAt,
 
-        u.id as user_id,
-        u.full_name as full_name,
-        u.user_name,
-        u.profile_image
+    u.id AS user_id as userId ,
+    u.full_name as fullName,
+    u.user_name as userName,
+    u.profile_image as profileName,
 
-      FROM posts p
-      JOIN users u
-      ON p.user_id = u.id
+    m.id AS mediaId,
+    m.media_url as mediaUrl,
+    m.cloud_id as cloudId
 
-      WHERE p.post_status = 'active'
+FROM posts p
 
-      ORDER BY p.id DESC
+JOIN users u
+    ON p.user_id = u.id
 
-      LIMIT $1
+LEFT JOIN post_media m
+    ON p.id = m.post_id
+
+WHERE
+    p.post_status = 'active'
+    AND (m.media_status = 'active' OR m.id IS NULL)
+
+ORDER BY p.id DESC
+
+LIMIT $1;
     `;
 
       values = [limit];
     } else {
       query = `
       SELECT
-        p.id,
-        p.post_title,
-        p.post_description,
-        p.post_type,
-        p.created_at,
+        p.id as id,
+        p.post_title as postTitle,
+        p.post_description as postDescription,
+        p.post_type as postType,
+        p.created_at as createdAt,
 
-        u.id as user_id,
-        u.name as full_name,
-        u.user_name,
-        u.profile_image
+        u.id as userId,
+        u.name as fullName,
+        u.user_name as userName,
+        u.profile_image as profileImage,
+
+        m.id as mediaId,
+        m.media_url as mediaUrl,
+        m.cloud_id as cloudId
 
       FROM posts p
       JOIN users u
+      LEFT JOIN post_media m ON
+         m.post_id = p.id
       ON p.user_id = u.id
 
       WHERE
         p.post_status = 'active'
-        AND p.id < $1
+        AND p.id < $1 AND (m.media_status = 'active' OR m.id IS NULL)
 
       ORDER BY p.id DESC
 
@@ -107,8 +123,6 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
     }
 
     const result = await pool.query(query, values);
-
-
 
     return result.rows;
   } catch (err) {
