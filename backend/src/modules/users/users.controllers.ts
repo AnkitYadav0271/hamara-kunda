@@ -32,7 +32,7 @@ export const loginUserController = async (
 ) => {
   try {
     const data = await loginUserService(req.body);
-    return res.status(200).json({ success: true, data });
+    return res.status(200).json({ success: true,message:"login is successful", data });
   } catch (err) {
     next(err);
   }
