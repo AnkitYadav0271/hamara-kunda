@@ -45,7 +45,10 @@ export async function createPost(
   }
 }
 
-export async function getFeedRepo(cursor?: number, limit: number = 20) {
+export async function getFeedRepo(
+  cursor?: number,
+  limit: number = 20,
+): Promise<Post[]> {
   let query: string;
   let values: any[];
 
@@ -53,20 +56,27 @@ export async function getFeedRepo(cursor?: number, limit: number = 20) {
     if (!cursor) {
       query = `
       SELECT
-    p.id as id,
-    p.post_title as postTitle,
-    p.post_description as postDescription,
-    p.post_type as postType,
-    p.created_at as createdAt,
+    p.id AS "id",
+    p.post_title AS "postTitle",
+    p.post_description AS "postDescription",
+    p.post_type AS "postType",
+    p.created_at AS "createdAt",
 
-    u.id AS user_id as userId ,
-    u.full_name as fullName,
-    u.user_name as userName,
-    u.profile_image as profileName,
+    u.id AS user_id AS "userId" ,
+    u.full_name AS "fullName",
+    u.user_name AS "userName",
+    u.profile_image AS "profileName",
 
-    m.id AS mediaId,
-    m.media_url as mediaUrl,
-    m.cloud_id as cloudId
+    b.business_id AS "businessId",
+    b.business_name AS "businessName",
+    b.business_profile_image_url AS "businessProfileImage",
+
+    m.id AS "mediaId",
+    m.media_url AS "mediaUrl",
+    m.cloud_id AS "cloudId",
+
+    COUNT(DISTINCT pl.id) AS "postLikes",
+    COUNT(DISTINCT pc.id) AS "postComments"
 
 FROM posts p
 
@@ -75,6 +85,15 @@ JOIN users u
 
 LEFT JOIN post_media m
     ON p.id = m.post_id
+
+LEFT JOIN businesses b
+    ON p.business_id = b.id   
+    
+LEFT JOIN post_likes pl
+  ON pl.post_id = p.id   
+  
+LEFT JOIN post_comments pc
+  ON pc.post_id = p.id      
 
 WHERE
     p.post_status = 'active'
@@ -89,26 +108,42 @@ LIMIT $1;
     } else {
       query = `
       SELECT
-        p.id as id,
-        p.post_title as postTitle,
-        p.post_description as postDescription,
-        p.post_type as postType,
-        p.created_at as createdAt,
+        p.id as "id",
+        p.post_title as "postTitle",
+        p.post_description as "postDescription",
+        p.post_type as "postType",
+        p.created_at as "createdAt",
 
-        u.id as userId,
-        u.name as fullName,
-        u.user_name as userName,
-        u.profile_image as profileImage,
+        u.id as "userId",
+        u.name as "fullName",
+        u.user_name as "userName",
+        u.profile_image as "profileImage",
+
+        b.business_id as "businessId",
+        b.business_name as "businessName",
+        b.business_profile_image_url as "businessProfileImage",
 
         m.id as mediaId,
-        m.media_url as mediaUrl,
-        m.cloud_id as cloudId
+        m.media_url as "mediaUrl",
+        m.cloud_id as "cloudId",
+
+       COUNT(DISTINCT pl.id) as "postLikes",
+       COUNT(DISTINCT pc.id) as "postComments"
 
       FROM posts p
       JOIN users u
       LEFT JOIN post_media m ON
          m.post_id = p.id
       ON p.user_id = u.id
+
+      LEFT JOIN businesses b
+      ON p.business_id = b.id 
+      
+      LEFT JOIN post_likes pl
+      ON pl.post_id = p.id   
+  
+      LEFT JOIN post_comments pc
+      ON pc.post_id = p.id  
 
       WHERE
         p.post_status = 'active'
@@ -132,24 +167,37 @@ LIMIT $1;
 
 //* Find postDetails by Id;
 
-export async function getPostDetails(id: number) {
+export async function getPostDetails(id: number): Promise<Post[]> {
   try {
     const query = `
 SELECT
-    p.id,
-    p.post_title,
-    p.post_description,
-    p.post_type,
-    p.created_at,
+    p.id as id,
+    p.post_title as "postTitle",
+    p.post_description as "postDescription",
+    p.post_type as "postType",
+    p.created_at as "createdAt",
+    
 
-    u.id AS user_id,
-    u.full_name,
-    u.user_name,
-    u.profile_image,
 
-    pm.id AS media_id,
-    pm.media_url,
-    pm.media_type
+
+    u.id AS user_id as "userId",
+    u.full_name as "fullName",
+    u.user_name as "userName",
+    u.profile_image as "profileImage",
+
+    b.business_id as "businessId",
+    b.business_name as "businessName",
+    b.business_profile_image_url as "businessProfileImage",
+
+
+    pm.id as media_id as "mediaId",
+    pm.media_url as "mediaUrl",
+    pm.cloud_id as "cloudId",
+    
+
+    COUNT(DISTINCT pl.id) as "postLikes",
+    COUNT(DISTINCT pc.id) as "postComments"
+    
 
 FROM posts p
 
@@ -159,9 +207,18 @@ ON u.id = p.user_id
 LEFT JOIN post_media pm
 ON pm.post_id = p.id
 
+LEFT JOIN businesses b
+ON p.business_id = b.id
+
+LEFT JOIN post_likes pl
+  ON pl.post_id = p.id   
+  
+LEFT JOIN post_comments pc
+  ON pc.post_id = p.id  
+
 WHERE
     p.id = $1
-    AND p.post_status = 'active'
+    AND p.post_status = 'active' AND pm.media_status = 'active'
 `;
     const values = [id];
     return (await pool.query(query, values)).rows;
@@ -172,7 +229,8 @@ WHERE
 
 //* getPostById
 
-export async function findPostById(id: number): Promise<Post | undefined> {
+export async function findPostById(id: number) {
+  //this will return raw post without any joins actually its not an api for ui
   try {
     const query = `SELECT * FROM posts WHERE id = $1`;
     const values = [id];

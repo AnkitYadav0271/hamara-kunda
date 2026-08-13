@@ -21,11 +21,20 @@ export interface PostDataService {
 
 export interface Post {
   id: number;
-  user_id: number;
-  business_id: number | null;
-  post_title: string;
-  post_description: string | null;
-  created_at: Date;
-  post_status: "active" | "hidden" | "deleted";
-  post_type: "user" | "business" | "alert" | "news" | "sponsored";
+  userId: number;
+  fullName: string;
+  userName: string;
+  businessId: number | null;
+  businessName?: string;
+  businessProfileImage?: string | null;
+  postTitle: string;
+  postDescription: string | null;
+  createdAt: Date;
+  postStatus: "active" | "hidden" | "deleted";
+  postType: "user" | "business" | "alert" | "news" | "sponsored";
+  mediaId?: number;
+  mediaUrl?: string;
+  cloudId?: string;
+  postLikes: number;
+  postComments: number;
 }
