@@ -13,7 +13,8 @@ CREATE TABLE users (
 
     date_of_birth DATE,
 
-    role VARCHAR(20) DEFAULT 'user',
+    role VARCHAR(20) DEFAULT 'user'
+    CHECK(role IN ('user','admin')),
 
     profile_image VARCHAR(250),
 
@@ -25,6 +26,7 @@ CREATE TABLE users (
 
     user_pref_language VARCHAR(10) DEFAULT 'hi'
     CHECK(user_pref_language IN ('en','hi')),
+
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
