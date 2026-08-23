@@ -1,5 +1,5 @@
 import { pool } from "../../config/db.ts";
-import { CreateUserDataRepo, User } from "../../utils/users.types.ts";
+import { CreateUserDataRepo, User } from "./users.types.ts";
 
 //*______________________________________________________//
 //* ______________CREATE USER REPO FUNCTION______________//
