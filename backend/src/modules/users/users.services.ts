@@ -1,4 +1,4 @@
-import { CreateUserData, loginData, User } from "../../utils/users.types.ts";
+import { CreateUserData, loginData, User } from "./users.types.ts";
 import {
   countFollowers,
   countFollowing,
@@ -18,7 +18,13 @@ import { sendEmailVerification } from "../../utils/email-verification.ts";
 import { jwtTokenSign } from "../../utils/jwt.ts";
 import { NotAuthorizedError } from "../../errors/not-authorised-error.ts";
 
-//*Register User
+/*
+                                  Register User Service
+
+  User should register only if user with given email does not exist.
+                               
+
+*/
 export async function registerUserService(data: CreateUserData) {
   const existingUser = await findUserByEmail(data.email);
 
@@ -43,7 +49,13 @@ export async function registerUserService(data: CreateUserData) {
   return user;
 }
 
-//*Login user
+/* 
+
+                         Login User Service
+
+ User should Login if the email and password are correct                        
+
+*/
 
 export async function loginUserService(data: loginData) {
   const existingUser = await findUserByEmail(data.email);
@@ -71,7 +83,12 @@ export async function loginUserService(data: loginData) {
   };
 }
 
-//*Get currentUserService
+/*   
+
+Get currentUserService 
+
+
+*/
 
 export const currentUserService = async (id: number) => {
   const user = await findUserById(id);
@@ -82,7 +99,11 @@ export const currentUserService = async (id: number) => {
   return user;
 };
 
-//*followUserService
+/*                          followUserService     
+
+-User should be able to follow another user if not already following
+
+*/
 
 export async function followUserService(data: {
   followingId: number;
@@ -117,6 +138,9 @@ export async function countFollowingService(userId: number) {
 }
 
 //*VerifyEmail Service
+/* 
+-Verify email otp only if user has (signed up & otp is not expired & otp matches)
+*/
 
 export async function verifyEmailService(data: {
   otp: string;
@@ -128,7 +152,7 @@ export async function verifyEmailService(data: {
   }
 
   if (Date.now() > savedOtp.expires_at) {
-    throw new BadRequestError("Otp Expired please regenerate opt");
+    throw new BadRequestError("Otp Expired please regenerate otp");
   }
 
   const otpMatches = bcrypt.compare(savedOtp.hashed_otp, String(data.otp));

@@ -644,7 +644,7 @@ This separation keeps the backend maintainable as the application grows.
 
 # Features to Implement (Not implemented)
 
-# 16. Admin Moderation
+## Admin Moderation
 
 Administrators are responsible for maintaining the quality of the platform.
 
