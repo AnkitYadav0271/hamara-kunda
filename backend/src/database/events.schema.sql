@@ -1,4 +1,7 @@
-
+CREATE TABLE event_types (
+    id SERIAL PRIMARY KEY,
+    category_name VARCHAR(100) UNIQUE NOT NULL
+);
 CREATE TABLE events (
     id SERIAL PRIMARY KEY,
 
@@ -74,7 +77,3 @@ CREATE TABLE event_media (
     )
 );
 
-CREATE TABLE event_types (
-    id SERIAL PRIMARY KEY,
-    category_name VARCHAR(100) UNIQUE NOT NULL
-);

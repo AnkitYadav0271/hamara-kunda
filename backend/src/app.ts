@@ -10,6 +10,8 @@ import BusinessRouter from "./modules/businesses/business.route.ts";
 import BusinessFollowRouter from "./modules/businesses/businessFollowers/businessFollowers.route.ts";
 import BusinessRatingRouter from "./modules/businesses/businessRatings/businessRatings.route.ts";
 import EventRouter from "./modules/events/events.route.ts";
+
+import SearchRouter from "./modules/search/search.route.js"
 import { errorHandler } from "./errors/error-handler.ts";
 
 
@@ -28,6 +30,7 @@ app.use("/api/business", BusinessRouter);
 app.use("/api/business", BusinessFollowRouter);
 app.use("/api/business", BusinessRatingRouter);
 app.use("/api/events", EventRouter);
+app.use("/api/search", SearchRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
