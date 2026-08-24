@@ -1,11 +1,17 @@
 export interface queryData {
     q: string,
+    type: string | null,
+    limit: string | null,
 }
 
 export interface queryDataRepo {
-    q: string
+    q: string,
+    type: string | null,
+    limit: string | null,
 }
 
 export interface queryDataService {
-    q: string
+    q: string,
+    type: string | null,
+    limit: string | null
 }
